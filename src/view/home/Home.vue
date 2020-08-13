@@ -4,16 +4,68 @@
         <home-swiper :banners="banners"></home-swiper>
         <home-recommend-view :recommends="recommends"></home-recommend-view>
         <home-pop></home-pop>
+        <tab-control class="tab-control" :titles="['流行','新款','精选']"></tab-control>
 
-        
+        <ul>
+            <li>2</li>
+            <li>323</li>
+            <li>32</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>2</li>
+            <li>323</li>
+            <li>32</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>2</li>
+            <li>323</li>
+            <li>32</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>2</li>
+            <li>323</li>
+            <li>32</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+            <li>323</li>
+        </ul>
    </div>
 </template>
 
 <script>
-import NavBar from 'components/common/navbar/NavBar'
 import HomeSwiper from './childComps/HomeSwiper'
 import HomeRecommendView from './childComps/HomeRecommendView'
 import HomePop from './childComps/HomePop'
+
+import NavBar from 'components/common/navbar/NavBar'
+import TabControl from 'components/content/tabControl/TabControl'
 
 import {getHomeMultidata} from '../../network/home.js'
 
@@ -23,12 +75,18 @@ export default {
         NavBar,
         HomeSwiper,
         HomeRecommendView,
-        HomePop
+        HomePop,
+        TabControl
     },
     data(){
         return{
             banners:[],
-            recommends:[]
+            recommends:[],
+            goods:{
+                'pop':{page:0,list:[]},
+                'new':{page:0,list:[]},
+                'sell':{page:0,list:[]}
+            }
         }
     },
     created(){
@@ -53,5 +111,9 @@ export default {
         right: 0;
         top: 0;
         z-index: 9;
+    }
+    .tab-control{
+        position: sticky;
+        top: 44px;
     }
 </style>
