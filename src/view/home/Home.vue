@@ -4,58 +4,10 @@
         <home-swiper :banners="banners"></home-swiper>
         <home-recommend-view :recommends="recommends"></home-recommend-view>
         <home-pop></home-pop>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']"></tab-control>
+        <tab-control class="tab-control" :titles="['流行','新款','精选']"
+            @tabClick="tabClick"></tab-control>
+        <goods-list :goods="showGoods"></goods-list>
 
-        <ul>
-            <li>2</li>
-            <li>323</li>
-            <li>32</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>2</li>
-            <li>323</li>
-            <li>32</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>2</li>
-            <li>323</li>
-            <li>32</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>2</li>
-            <li>323</li>
-            <li>32</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-            <li>323</li>
-        </ul>
    </div>
 </template>
 
@@ -66,8 +18,11 @@ import HomePop from './childComps/HomePop'
 
 import NavBar from 'components/common/navbar/NavBar'
 import TabControl from 'components/content/tabControl/TabControl'
+import GoodsList from 'components/content/goods/GoodsList'
+
 
 import {getHomeMultidata} from '../../network/home.js'
+import {getHomeGoods} from '../../network/home.js'
 
 export default {
     name:'Home',
@@ -76,7 +31,8 @@ export default {
         HomeSwiper,
         HomeRecommendView,
         HomePop,
-        TabControl
+        TabControl,
+        GoodsList
     },
     data(){
         return{
@@ -86,15 +42,53 @@ export default {
                 'pop':{page:0,list:[]},
                 'new':{page:0,list:[]},
                 'sell':{page:0,list:[]}
-            }
+            },
+            currentRecommend:'pop'
+        }
+    },
+    computed:{
+        showGoods(){
+            return this.goods[this.currentRecommend].list
         }
     },
     created(){
         // 1.请求多个数据
-        getHomeMultidata().then(res =>{
-            this.banners = res.data.data.banner.list;
-            this.recommends = res.data.data.recommend.list;
-        })
+        this.getHomeMultidatac()
+
+        // 2.请求商品数据
+        this.getHomeGoodsc('pop')
+        this.getHomeGoodsc('new')
+        this.getHomeGoodsc('sell')
+    },
+    methods:{
+        // 网络请求
+        getHomeMultidatac(){
+            getHomeMultidata().then(res =>{
+                this.banners = res.data.data.banner.list;
+                this.recommends = res.data.data.recommend.list;
+            })
+        },
+        getHomeGoodsc(type){
+            const page = this.goods[type].page+1;
+            getHomeGoods(type,page).then(res =>{
+                // console.log(res)
+                this.goods[type].list.push(...res.data.data.list);
+                this.goods[type].list.page += 1;
+            })
+        },
+
+        // 事件监听
+        tabClick(index){
+            if(index == 0){
+                this.currentRecommend = 'pop'
+            }
+            else if(index == 1){
+                this.currentRecommend = 'new'
+            }
+            else{
+                this.currentRecommend = 'sell'
+            }
+        }
     }
 }
 </script>
@@ -115,5 +109,6 @@ export default {
     .tab-control{
         position: sticky;
         top: 44px;
+        z-index:1;
     }
 </style>
