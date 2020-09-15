@@ -5,11 +5,12 @@ const Home = ()=>import('../view/home/Home')
 const Category = ()=>import('../view/category/Category')
 const Cart = ()=>import('../view/cart/Cart')
 const Profile = ()=>import('../view/profile/Profile')
+const Detail = ()=>import('../view/detail/Detail')
 
 Vue.use(VueRouter)
 
 const routes = [
-    {
+      {
         path:'',
         redirect:'/home'
       },
@@ -28,6 +29,10 @@ const routes = [
       {
         path:'/profile',
         component:Profile
+      },
+      {
+        path:'/detail/:id',
+        component:Detail
       }
 ]
 
